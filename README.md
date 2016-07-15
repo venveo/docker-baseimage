@@ -8,7 +8,7 @@ _**Note**: This is built using Docker for Mac or Docker for Windows. If you have
 
 Install Docker for Mac or Docker for Windows
 
-Add the example `docker-compose.yml`  below to the root of your project
+Add the [example `docker-compose.yml`](#example-docker-composeyml)  below to the root of your project
 
 Change the `volumes` for the mysql-server container in `docker-compose.yml` to be relative to your project (e.g in Craft CMS projects, we usually set the volumes to use `"./craft/storage/database:/var/lib/mysql"`). This ensures that the database is maintained throughout the Docker containers lifecycle. Here is what the `volumes` could look like:
 
@@ -43,7 +43,7 @@ Run `docker-compose up -d` (the -d flag makes the containers run in the backgrou
 If you are using the provided `docker-compose.yml` and do not wish to utilize the `redis` or `memcached` servers, you can pass the container names to the `up` command to only start whats required, like so:
 
 ```
-docker-compose up web-server mysql-server
+docker-compose up -d web-server mysql-server
 ```
 
 Also, you can simply remove those services from the `docker-compose.yml` file, but make sure that you remove the containers from the web-servers `depends_on` and `links` to avoid errors.
