@@ -3,9 +3,11 @@ services:
 
         # the web container
         web-server:
-            image: venveo/baseimage:7.0-apache
+            image: venveo/baseimage:1.10-nginx
+            # image: venveo/baseimage:7.0-apache
             volumes:
                 - "./php:/var/www/public"
+                # - "./php:/usr/share/nginx/html"
             ports:
                 - "80:80"
                 - "443:443"
@@ -13,10 +15,12 @@ services:
                 - mysql-server
                 - redis-server
                 - memcached-server
+                - php-fpm
             depends_on:
                 - mysql-server
                 - redis-server
                 - memcached-server
+                - php-fpm
             environment:
                 - APP_ENV=local
                 - APP_CPTRIGGER=manage
@@ -46,3 +50,9 @@ services:
             image: venveo/baseimage:1.4-memcached
             ports:
                 - "11211:11211"
+
+        # php-fpm container
+        php-fpm:
+            image: venveo/baseimage:7.0-php-fpm
+            ports:
+                - "9000:9000"
