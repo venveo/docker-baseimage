@@ -26,7 +26,7 @@ services:
                 - memcached-server
             environment:
                 - APP_ENV=local
-                - APP_CPTRIGGER=manage
+                - APP_CPTRIGGER=admin
 
         # mysql container
         mysql-server:
