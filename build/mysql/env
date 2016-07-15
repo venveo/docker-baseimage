@@ -1,5 +1,0 @@
-MYSQL_ROOT_PASSWORD=TestingRootPassword
-MYSQL_DATABASE=testing_db
-MYSQL_USER=testing_user
-MYSQL_PASSWORD=testing_password
-MYSQL_ALLOW_EMPTY_PASSWORD=no

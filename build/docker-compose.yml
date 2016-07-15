@@ -17,6 +17,9 @@ services:
                 - mysql-server
                 - redis-server
                 - memcached-server
+            environment:
+                - APP_ENV=local
+                - APP_CPTRIGGER=manage
 
         # mysql container
         mysql-server:
@@ -35,7 +38,6 @@ services:
         # redis container
         redis-server:
             image: venveo/baseimage:3.2-redis
-            # volumes:
             ports:
                 - "6379:6379"
 
