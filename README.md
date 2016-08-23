@@ -65,10 +65,9 @@ services:
         web-server:
             image: venveo/baseimage:7.0-apache
             volumes:
-                - "./php:/var/www/public"
+                - ".:/var/www/"
             ports:
                 - "80:80"
-                - "443:443"
             links:
                 - mysql-server
                 - redis-server
