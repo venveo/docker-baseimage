@@ -1,4 +1,4 @@
-FROM php:7.0-apache
+FROM php:5.6-apache
 MAINTAINER Jason McCallister <jason@venveo.com>
 
 # install dependencies
@@ -29,13 +29,13 @@ RUN docker-php-ext-install pdo pdo_mysql
 # TODO look in here for the postgres support (/usr/src/php/ext)
 
 # install memcached for shared sessions
-RUN apt-get install -y libmemcached-dev
-RUN curl -o /root/memcached.zip https://github.com/php-memcached-dev/php-memcached/archive/php7.zip -L
-RUN cd /root && unzip memcached.zip && rm memcached.zip && \
- cd php-memcached-php7 && \
- phpize && ./configure --enable-sasl && make && make install && \
- cd /root && rm -rf /root/php-memcached-* && \
- echo "extension=memcached.so" > /usr/local/etc/php/conf.d/memcached.ini
+# RUN apt-get install -y libmemcached-dev
+# RUN curl -o /root/memcached.zip https://github.com/php-memcached-dev/php-memcached/archive/php7.zip -L
+# RUN cd /root && unzip memcached.zip && rm memcached.zip && \
+#  cd php-memcached-php && \
+#  phpize && ./configure --enable-sasl && make && make install && \
+#  cd /root && rm -rf /root/php-memcached-* && \
+#  echo "extension=memcached.so" > /usr/local/etc/php/conf.d/memcached.ini
  # comment out SASL for now
  # echo "memcached.use_sasl = 1" >> /usr/local/etc/php/conf.d/memcached.ini
 

@@ -1,5 +1,8 @@
 # build the 7.0-apache image
-# docker build -t venveo/baseimage:7.0-apache ./php-apache
+docker build -t venveo/baseimage:7.0-apache ./php-apache
+
+# build the 5.6-apache image
+docker build -t venveo/baseimage:5.6-apache ./php-apache/5.6
 
 # build the 5.7-mysql image
 docker build -t venveo/baseimage:5.7-mysql ./mysql
