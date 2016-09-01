@@ -9,12 +9,14 @@ RUN apt-get update && \
     libsasl2-dev \
     libmagickwand-dev --no-install-recommends
 
-# install extensions for PHP
+# install extensions for PHP w/ postgre
 RUN apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
         libpng12-dev \
+        postgresql-client \
+        libpq-dev \
         && docker-php-ext-install iconv mcrypt \
         && docker-php-ext-install mbstring
 
@@ -26,7 +28,8 @@ RUN pecl install imagick-3.4.0RC4 && docker-php-ext-enable imagick
 
 # enable pdo_mysql
 RUN docker-php-ext-install pdo pdo_mysql
-# TODO look in here for the postgres support (/usr/src/php/ext)
+# enable pdo_pgsql
+RUN docker-php-ext-install pdo pdo_pgsql
 
 # install memcached for shared sessions
 RUN apt-get install -y libmemcached-dev
