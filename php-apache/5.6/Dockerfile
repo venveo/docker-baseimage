@@ -2,7 +2,7 @@ FROM php:5.6-apache
 MAINTAINER Jason McCallister <jason@venveo.com>
 
 # install dependencies
-RUN apt-get update && \
+RUN apt-get update -y && \
     apt-get -yq install \
     wget git pwgen unzip \
     libz-dev \
@@ -16,6 +16,7 @@ RUN apt-get install -y \
         libmcrypt-dev \
         libpng12-dev \
         php5-pgsql \
+        php5-gd \
         postgresql-client \
         libpq-dev \
         && docker-php-ext-install iconv mcrypt \
@@ -24,6 +25,12 @@ RUN apt-get install -y \
 # enable rewrites
 RUN a2enmod rewrite
 
+# enable header mods
+RUN a2enmod headers
+
+# enable expiration mods
+RUN a2enmod expires
+
 # install imagick
 RUN pecl install imagick-3.4.0RC4 && docker-php-ext-enable imagick
 
@@ -31,6 +38,13 @@ RUN pecl install imagick-3.4.0RC4 && docker-php-ext-enable imagick
 RUN docker-php-ext-install pdo pdo_mysql
 # enable pdo_postgres
 RUN docker-php-ext-install pdo pdo_pgsql
+# enable php mysql
+RUN docker-php-ext-install mysql
+# enable GD image processing
+RUN docker-php-ext-configure gd --with-jpeg-dir \
+                                  --with-png-dir \
+                                  --with-freetype-dir
+RUN docker-php-ext-install gd
 
 # install memcached for shared sessions
 # RUN apt-get install -y libmemcached-dev
