@@ -1,6 +1,12 @@
 FROM php:7.0-apache
 MAINTAINER Jason McCallister <jason@venveo.com>
 
+RUN echo \
+   'deb ftp://ftp.us.debian.org/debian/ jessie main\n \
+    deb ftp://ftp.us.debian.org/debian/ jessie-updates main\n \
+    deb http://security.debian.org jessie/updates main\n' \
+    > /etc/apt/sources.list
+
 # install dependencies
 RUN apt-get update && \
     apt-get -yq install \
