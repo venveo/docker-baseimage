@@ -32,6 +32,9 @@ RUN a2enmod rewrite
 # install imagick
 RUN pecl install imagick-3.4.0RC4 && docker-php-ext-enable imagick
 
+# install zip archive
+RUN pecl install zip-1.13.5 && docker-php-ext-enable zip
+
 # enable pdo_mysql
 RUN docker-php-ext-install pdo pdo_mysql
 # enable pdo_pgsql

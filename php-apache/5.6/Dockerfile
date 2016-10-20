@@ -37,6 +37,9 @@ RUN a2enmod headers
 # enable expiration mods
 RUN a2enmod expires
 
+# install zip archive
+RUN pecl install zip-1.13.5 && docker-php-ext-enable zip
+
 # install imagick
 RUN pecl install imagick-3.4.0RC4 && docker-php-ext-enable imagick
 
