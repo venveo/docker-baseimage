@@ -24,7 +24,8 @@ RUN apt-get install -y \
         postgresql-client \
         libpq-dev \
         && docker-php-ext-install iconv mcrypt \
-        && docker-php-ext-install mbstring
+        && docker-php-ext-install mbstring \
+        && docker-php-ext-install mysqli
 
 # enable rewrites
 RUN a2enmod rewrite
