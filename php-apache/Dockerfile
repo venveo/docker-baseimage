@@ -39,7 +39,8 @@ RUN pecl install zip-1.13.5 && docker-php-ext-enable zip
 # install xdebug
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 RUN echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini
+    && echo "xdebug.remote_autostart=On" >> /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "xdebug.remote_host=docker_host" >> /usr/local/etc/php/conf.d/xdebug.ini
 
 # enable pdo_mysql
 RUN docker-php-ext-install pdo pdo_mysql
