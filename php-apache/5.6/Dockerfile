@@ -1,5 +1,5 @@
 FROM php:5.6-apache
-MAINTAINER Jason McCallister <jason@venveo.com>
+MAINTAINER Ransom Roberson <ransom@venveo.com>
 
 RUN echo \
    'deb ftp://ftp.us.debian.org/debian/ jessie main\n \
@@ -45,9 +45,7 @@ RUN pecl install imagick-3.4.0RC4 && docker-php-ext-enable imagick
 
 # install xdebug
 RUN pecl install xdebug && docker-php-ext-enable xdebug
-RUN echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.remote_autostart=On" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.remote_host=docker_host" >> /usr/local/etc/php/conf.d/xdebug.ini
+COPY xdebug.ini /etc/php/7.0/mods-available/xdebug.ini
 
 # enable pdo_mysql
 RUN docker-php-ext-install pdo pdo_mysql

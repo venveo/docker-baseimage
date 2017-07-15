@@ -1,2 +1,2 @@
 FROM redis:3.2-alpine
-MAINTAINER Jason McCallister <jason@venveo.com>
+MAINTAINER Ransom Roberson <ransom@venveo.com>

@@ -118,6 +118,7 @@ TODO - write up how we test this and build details.
 ## Credits
 
 * [Jason McCallister](https://github.com/themccallister)
+* [Ransom Roberson](https://github.com/mosnar)
 
 ## About Venveo
 
