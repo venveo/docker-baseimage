@@ -1,6 +1,9 @@
 FROM php:7.0-apache
 MAINTAINER Ransom Roberson <ransom@venveo.com>
 
+ARG BLD_PKGS="libfreetype6-dev libjpeg62-turbo-dev libpng12-dev libmcrypt-dev postgresql-client libpq-dev libicu-dev unzip wget libz-dev libsasl2-dev libmagickwand-dev libmemcached-dev"
+ARG PHP_EXTS="pdo pdo_pgsql pdo_mysql pgsql gd mysqli intl iconv mcrypt mbstring"
+
 RUN echo \
    'deb ftp://ftp.us.debian.org/debian/ jessie main\n \
     deb ftp://ftp.us.debian.org/debian/ jessie-updates main\n \
@@ -9,47 +12,24 @@ RUN echo \
 
 # install dependencies
 RUN apt-get update && \
-    apt-get -yq install \
-    wget git pwgen unzip \
-    libz-dev \
-    libsasl2-dev \
-    libmagickwand-dev --no-install-recommends
+    apt-get -y install $BLD_PKGS \
+    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+    && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
 
-# install extensions for PHP w/ postgre
-RUN apt-get install -y \
-        libfreetype6-dev \
-        libjpeg62-turbo-dev \
-        libmcrypt-dev \
-        libpng12-dev \
-        postgresql-client \
-        libpq-dev \
-        && docker-php-ext-install iconv mcrypt \
-        && docker-php-ext-install mbstring \
-        && docker-php-ext-install mysqli
+# install extensions for PHP
+RUN docker-php-ext-install $PHP_EXTS
 
-# enable rewrites
-RUN a2enmod rewrite
+# enable rewrites and headers
+RUN a2enmod rewrite \
+    && a2enmod headers
 
-# enable headers
-RUN a2enmod headers
+# install imagick, zip, and xdebug
+RUN pecl install imagick-3.4.0RC4 zip-1.13.5 xdebug \
+ && docker-php-ext-enable imagick zip xdebug
 
-# install imagick
-RUN pecl install imagick-3.4.0RC4 && docker-php-ext-enable imagick
-
-# install zip archive
-RUN pecl install zip-1.13.5 && docker-php-ext-enable zip
-
-# install xdebug
-RUN pecl install xdebug && docker-php-ext-enable xdebug
 COPY build/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
-# enable pdo_mysql
-RUN docker-php-ext-install pdo pdo_mysql
-# enable pdo_pgsql
-RUN docker-php-ext-install pdo pdo_pgsql
-
 # install memcached for shared sessions
-RUN apt-get install -y libmemcached-dev
 RUN curl -o /root/memcached.zip https://github.com/php-memcached-dev/php-memcached/archive/php7.zip -L
 RUN cd /root && unzip memcached.zip && rm memcached.zip && \
  cd php-memcached-php7 && \
@@ -69,25 +49,20 @@ COPY build/000-default.conf /etc/apache2/sites-available/
 # delete www as composer will create it
 RUN rm -rf /var/www/html && mkdir -p /var/www/public
 
-# install the boilerplate with git
-# RUN cd /var/www && git init
-# RUN cd /var/www && git remote add origin https://github.com/venveo/craft-boilerplate
-# RUN cd /var/www && git fetch
-# RUN cd /var/www && git checkout -t origin/master
-# RUN cd /var/www && bash install.sh
-
 # setup logs for apache
 RUN mkdir -p /var/www/logs
 RUN echo "error_log = /var/www/logs/php_error.log" > /usr/local/etc/php/conf.d/log.ini
 RUN echo "log_errors = On" >> /usr/local/etc/php/conf.d/log.ini
 RUN echo "" > /etc/apache2/conf-enabled/log.conf
 
-# install blackfire
-RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
-    && curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/$version \
-    && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp \
-    && mv /tmp/blackfire-*.so $(php -r "echo ini_get('extension_dir');")/blackfire.so \
-    && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > $PHP_INI_DIR/conf.d/blackfire.ini
+RUN { \
+        echo 'opcache.memory_consumption=128'; \
+        echo 'opcache.interned_strings_buffer=8'; \
+        echo 'opcache.max_accelerated_files=4000'; \
+        echo 'opcache.revalidate_freq=2'; \
+        echo 'opcache.fast_shutdown=1'; \
+        echo 'opcache.enable_cli=1'; \
+    } > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
 # cleanup the image
 RUN rm -rf /var/lib/apt/lists/*
@@ -96,8 +71,10 @@ RUN rm -rf /var/lib/apt/lists/*
 WORKDIR /var/www
 
 # modify the www-data user
-RUN usermod -u 1000 www-data
-RUN chown -R www-data:www-data /var/www
+RUN usermod -u 1000 www-data \
+    && mkdir /var/www/storage \
+    && chmod 700 /var/www/storage \
+    && chown -R www-data:www-data /var/www
 # RUN chown -R www-data:www-data /var/www/config
 # RUN chown -R www-data:www-data /var/www/storage
 

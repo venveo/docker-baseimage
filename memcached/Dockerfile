@@ -1,2 +1,2 @@
 FROM memcached:1.4-alpine
-MAINTAINER Jason McCallster <jason@venveo.com>
+MAINTAINER Ransom Roberson <ransom@venveo.com>
