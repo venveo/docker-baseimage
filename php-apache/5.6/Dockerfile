@@ -45,7 +45,8 @@ RUN pecl install imagick-3.4.0RC4 && docker-php-ext-enable imagick
 
 # install xdebug
 RUN pecl install xdebug && docker-php-ext-enable xdebug
-COPY xdebug.ini /etc/php/7.0/mods-available/xdebug.ini
+RUN echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini
 
 # enable pdo_mysql
 RUN docker-php-ext-install pdo pdo_mysql
