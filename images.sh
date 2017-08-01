@@ -19,3 +19,6 @@ docker build -t venveo/baseimage:1.10-nginx ./nginx
 
 # build the 7.0-php-fpm image
 docker build -t venveo/baseimage:7.0-php-fpm ./php-fpm
+
+# build the 4.8-node-gulp image
+docker build -t venveo/baseimage:4.8-node-gulp ./4.8-node-gulp/
