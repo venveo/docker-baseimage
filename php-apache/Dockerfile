@@ -1,8 +1,8 @@
 FROM php:7.0-apache
 MAINTAINER Ransom Roberson <ransom@venveo.com>
 
-ARG BLD_PKGS="libfreetype6-dev libjpeg62-turbo-dev libpng12-dev libmcrypt-dev postgresql-client libpq-dev libicu-dev unzip wget libz-dev libsasl2-dev libmagickwand-dev libmemcached-dev"
-ARG PHP_EXTS="pdo pdo_pgsql pdo_mysql pgsql gd mysqli intl iconv mcrypt mbstring"
+ARG BLD_PKGS="libfreetype6-dev libjpeg62-turbo-dev libpng12-dev libxml2-dev libmcrypt-dev postgresql-client libpq-dev libicu-dev unzip wget libz-dev libsasl2-dev libmagickwand-dev libmemcached-dev"
+ARG PHP_EXTS="pdo pdo_pgsql pdo_mysql pgsql gd mysqli intl iconv mcrypt mbstring soap"
 
 RUN echo \
    'deb ftp://ftp.us.debian.org/debian/ jessie main\n \
@@ -51,7 +51,7 @@ RUN rm -rf /var/www/html && mkdir -p /var/www/public
 
 # setup logs for apache
 RUN mkdir -p /var/www/logs
-RUN echo "error_log = /var/www/logs/php_error.log" > /usr/local/etc/php/conf.d/log.ini
+RUN echo "error_log = /var/www/storage/logs/php_error.log" > /usr/local/etc/php/conf.d/log.ini
 RUN echo "log_errors = On" >> /usr/local/etc/php/conf.d/log.ini
 RUN echo "" > /etc/apache2/conf-enabled/log.conf
 
@@ -75,8 +75,6 @@ RUN usermod -u 1000 www-data \
     && mkdir /var/www/storage \
     && chmod 700 /var/www/storage \
     && chown -R www-data:www-data /var/www
-# RUN chown -R www-data:www-data /var/www/config
-# RUN chown -R www-data:www-data /var/www/storage
 
 # expose ports
 EXPOSE 80
