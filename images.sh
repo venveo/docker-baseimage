@@ -25,3 +25,6 @@ docker build -t venveo/baseimage:node-gulp ./node/node-gulp
 
 # build the php7-composer image
 docker build -t venveo/baseimage:php7-composer ./composer/php7
+
+# build the 7-apache-alpine image
+docker build -t venveo/baseimage:php7-alpine ./alpine/php-apache
