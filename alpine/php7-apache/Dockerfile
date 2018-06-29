@@ -43,6 +43,7 @@ RUN apk add \
 	php7-session \
 	php7-redis \
 	php7-imagick \
+	php7-fileinfo \
 	php7-exif
 
 # Problems installing in above stack
@@ -67,4 +68,5 @@ ADD bootstrap/start.sh /bootstrap/
 RUN chmod +x /bootstrap/start.sh
 
 EXPOSE 80
+EXPOSE 443
 ENTRYPOINT ["/bootstrap/start.sh"]
