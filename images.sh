@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# build the 7.2-apache image
+docker build -t venveo/baseimage:7.2-apache ./php-apache/7.2
+
 # build the 7.0-apache image
 docker build -t venveo/baseimage:7.0-apache ./php-apache
 
