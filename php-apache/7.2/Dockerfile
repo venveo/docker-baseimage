@@ -1,7 +1,7 @@
 FROM php:7.2-apache
 MAINTAINER Ransom Roberson <ransom@venveo.com>
 
-ARG BLD_PKGS="libfreetype6-dev libjpeg62-turbo-dev libpng-dev libxml2-dev libmcrypt-dev postgresql-client-11 libpq-dev libicu-dev unzip wget libz-dev libsasl2-dev libmagickwand-dev libmemcached-dev"
+ARG BLD_PKGS="libfreetype6-dev libjpeg62-turbo-dev libpng-dev libxml2-dev libmcrypt-dev libpq-dev libicu-dev unzip wget libz-dev libsasl2-dev libmagickwand-dev libmemcached-dev"
 ARG PHP_EXTS="pdo pdo_pgsql pdo_mysql pgsql gd mysqli intl iconv mbstring soap"
 
 RUN echo \
