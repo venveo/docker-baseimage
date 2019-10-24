@@ -31,3 +31,6 @@ docker build -t venveo/baseimage:php7-composer ./composer/php7
 
 # build the 7-apache-alpine image
 docker build -t venveo/baseimage:php7-alpine ./alpine/php-apache
+
+# build the 73-apache-alpine image
+docker build -t venveo/baseimage:php73-apache-alpine ./alpine/php73-apache
